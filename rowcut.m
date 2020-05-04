@@ -5,7 +5,7 @@ edge_cut = B(min(X): max(X), min(Y): max(Y));  %剔除周围大的空白
 
 [m, ~] = size(edge_cut);  %寻找行间空白
 countY = 256 * ones(m,1);  %保留第一行和最后一行
-for i = 1:m-2  
+for i = 1 : m-2  
   if isempty(find(edge_cut(i+1, :),1))
       countY(i+1, 1) = countY(i, 1) + 1;  %紧挨字的空白像素行被标记为256
   else

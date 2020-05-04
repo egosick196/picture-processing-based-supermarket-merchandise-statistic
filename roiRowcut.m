@@ -22,7 +22,7 @@ gray_cut = {cout};
 color_cut = {cout};
 
 for j = 1 : cout
-    gray_cut{j} = B(white_mark(2*j):white_mark(2*j+1), :);
+    gray_cut{j} = B(white_mark(2*j) : white_mark(2*j+1), :);
     color_cut{j} = color(white_mark(2*j):white_mark(2*j+1), :, :);
 end
 

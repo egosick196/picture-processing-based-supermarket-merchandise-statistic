@@ -20,7 +20,7 @@ for i = 1 : connComp.NumObjects
         P_image(connComp.PixelIdxList{i})=0;
     else
         rectangle('Position',[leftx,lefty,width,height], 'EdgeColor','g');
-        mask(lefty + 8 : lefty + height - 7, leftx+1 : leftx+width) = 1;
+        mask(lefty + 6 : lefty + height - 5, leftx+1 : leftx+width) = 1 ;
         j = j + 1;
     end
 end

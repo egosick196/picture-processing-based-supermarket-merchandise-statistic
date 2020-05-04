@@ -1,6 +1,7 @@
 function [ total_num, final_cut ] = refine_wordcut( cout, line_cut )
 
 total_num = 0;
+final_cut = {};
 for k = 1 : cout
     b = line_cut{1, k};    
     [X,Y] = find(b == 1);
@@ -27,10 +28,8 @@ for k = 1 : cout
         cut = row(min(X1): max(X1), min(Y1): max(Y1));
         
         if ~isempty(cut)
-           stand_cut = imresize(cut, [35 30]);
+            total_num = total_num + 1;
+            final_cut{total_num} = cut;
         end
-        
-        total_num = total_num + 1;
-        final_cut{total_num} = stand_cut;
     end      
 end        

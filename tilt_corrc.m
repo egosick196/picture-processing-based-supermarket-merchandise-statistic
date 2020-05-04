@@ -1,8 +1,17 @@
 function [ I5, color ] = tilt_corrc( str )
 
 %% 倾斜校正
-pic = imread(str);
-B = rgb2gray(pic);
+Pic = imread(str);
+b = rgb2gray(Pic);
+
+[row, array] = size(b);
+if row < array
+    B = imrotate(b, 90, 'loose');
+    pic = imrotate(Pic, 90, 'loose');
+else
+    B = b;
+    pic = Pic;
+end
 
 I2 = wiener2(B, [8, 8]); 
 I3 = edge(I2, 'sobel', 'horizontal');  %边缘求取

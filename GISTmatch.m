@@ -1,4 +1,4 @@
-function [ matched ] = GISTmatch( total_num )
+function [ matched ] = GISTmatch( total_num, total_sequ )
 
 matched = 255 * ones(1, total_num);
 fit = 1;
@@ -13,26 +13,42 @@ param.fc_prefilt = 3;
 
 % Load images
 for i = 1 : total_num
-    labtomatch = num2str(i - 1);
-    img1 = imread(strcat('.\word\word-', labtomatch, '.jpg'));
+    img1 = total_sequ{i};
     gist1 = LMgist(img1, '', param);
     D = zeros(10, 1);
 
     % Computing gist:
-    parfor j = 1 : 11
+    parfor j = 1 : 17
         % Distance between the two images:
         D(j, 1) = sum((gist1-gist2(j, :)).^2);
     end
     
-    if min(D) < 0.5
+    if min(D) < 0.7
         [matched(1, fit), ~] = find(D == min(D));
         matched(1, fit) = matched(1, fit) - 1;
         fit = fit + 1;
     end
     
-    [~, ex] = find(matched == 10);
+    [~, ex] = find(matched > 9 & matched ~= 255);
     if isempty(ex)
     else
-        matched(1, ex) = 1;
+        for k = 1 : length(ex)
+            switch matched(1, ex(k))
+            case 10
+                matched(1, ex(k)) = 1;
+            case 11
+                matched(1, ex(k)) = 1;
+            case 12
+                matched(1, ex(k)) = 3;
+            case 13
+                matched(1, ex(k)) = 3;
+            case 14
+                matched(1, ex(k)) = 4;
+            case 15
+                matched(1, ex(k)) = 6;
+            case 16
+                matched(1, ex(k)) = 9;
+            end
+        end
     end
 end
