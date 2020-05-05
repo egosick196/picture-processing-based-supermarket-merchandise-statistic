@@ -1,4 +1,4 @@
-%function [] = checkandwrite(matched)
+function [] = checkandwrite(matched)
 
 load('.\data\following.mat'); load('.\data\category.mat');
 timearray = clock; this = timearray(1, 1);
@@ -16,7 +16,6 @@ flag3 = length(start3);
 start = [start1, start2, start3];
 flag = flag1 + flag2 + flag3;
 isemerge = strings(1, flag);
-inter = flag1 + flag2;
 
 for i = 1 : flag 
     if matched(1, start(1, i) + 4) == 0  %检查年份数值串的格式，月份是否含0
@@ -38,14 +37,43 @@ for i = 1 : flag
     daynow = datetime(Now);  %现在日期
     due = duration(dayexpire - daynow,'Format','d');  %到过期为止剩余时间
 
-    if due > category{following, 5}  %是否需要加入促销
+    if due < category{following, 5}  %是否需要加入促销判断
         isemerge(1, i) = 'yes';
     else
         isemerge(1, i) = 'no';
     end
 end
 
-[shunxu, index] = sort(start);
+[~, index] = sort(start);  %输出提示信息
 msg = isemerge(index);
+warn = find(strcmp(msg, 'yes'));
+str = num2str(warn);
 
-uiwait(msgbox('Operation Completed','检测结果','modal'));
+situate = '';
+for j = 1 : length(str)
+    situate = strcat(situate, '、', str(j));
+end
+
+if isempty(warn)
+    uiwait(msgbox('无商品需要进行促销','检测结果','modal'));
+else
+    situate(1) = '';
+    warn_str = strcat('从上到下第', situate, '件商品需加入促销');
+    uiwait(msgbox(warn_str,'检测结果','modal'));
+end
+
+if exist('.\data\统计表.xlsx', 'file')
+else
+    kind = cate_tab.kind;
+    total_number = zeros(kind_num, 1);
+    number_needed_promotion = zeros(kind_num, 1);
+    T = table(kind, total_number, number_needed_promotion);
+    writetable(T, '.\data\统计表.xlsx');
+end
+
+results = readtable('.\data\统计表.xlsx');
+sum = results.total_number(following) + flag;
+sum_promo = results.number_needed_promotion(following) + length(warn);
+results.total_number(following) = sum;
+results.number_needed_promotion(following) = sum_promo;
+writetable(results, '.\data\统计表.xlsx');

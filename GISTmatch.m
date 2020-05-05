@@ -18,7 +18,7 @@ for i = 1 : total_num
     D = zeros(10, 1);
 
     % Computing gist:
-    parfor j = 1 : 17
+    parfor j = 1 : 18
         % Distance between the two images:
         D(j, 1) = sum((gist1-gist2(j, :)).^2);
     end
@@ -39,14 +39,16 @@ for i = 1 : total_num
             case 11
                 matched(1, ex(k)) = 1;
             case 12
-                matched(1, ex(k)) = 3;
+                matched(1, ex(k)) = 2;
             case 13
                 matched(1, ex(k)) = 3;
             case 14
-                matched(1, ex(k)) = 4;
+                matched(1, ex(k)) = 3;
             case 15
-                matched(1, ex(k)) = 6;
+                matched(1, ex(k)) = 4;
             case 16
+                matched(1, ex(k)) = 6;
+            case 17
                 matched(1, ex(k)) = 9;
             end
         end
